@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/E-Manger-Mieux.Web.props" />
+</Project>
