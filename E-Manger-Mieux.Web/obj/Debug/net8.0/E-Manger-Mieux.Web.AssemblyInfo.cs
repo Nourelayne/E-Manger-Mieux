@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("E-Manger-Mieux.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de27043cd2c8c92b6fcb544d0110382298a38274")]
 [assembly: System.Reflection.AssemblyProductAttribute("E-Manger-Mieux.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("E-Manger-Mieux.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

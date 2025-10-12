@@ -1,21 +1,16 @@
-const string clientAppPath = "ClientApp";
 
 var builder = WebApplication.CreateBuilder(args);
 
 var isDevelopment = builder.Environment.IsDevelopment();
-
 var configuration = builder.Configuration;
-
 var services = builder.Services;
 
+var clientAppPath = "ClientApp/dist";
+
+var developmentServer = configuration["spaDevelopmentServer"];
+
 services.AddSpaStaticFiles(options => { options.RootPath = clientAppPath; });
-
 services.AddControllers();
-
-services.AddAuthorizationBuilder().AddPolicy("MFA", policy =>
-{
-    policy.RequireAuthenticatedUser();
-});
 
 services.AddAuthentication(options =>
 {
@@ -26,6 +21,8 @@ services.AddAuthentication(options =>
 {
     options.Cookie.Name = "__Host-bff";
     options.Cookie.SameSite = SameSiteMode.Strict;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+    options.SlidingExpiration = true;
 })
 .AddOpenIdConnect("oidc", options =>
 {
@@ -39,7 +36,6 @@ services.AddAuthentication(options =>
     options.UsePkce = true;
 
     options.GetClaimsFromUserInfoEndpoint = true;
-
     options.SaveTokens = true;
 
     options.Scope.Clear();
@@ -57,29 +53,34 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();
-
 app.UseBff();
-
 app.UseAuthorization();
 
 app.MapControllers().RequireAuthorization().AsBffApiEndpoint();
-
 app.MapBffManagementEndpoints();
 
-app.UseSpaStaticFiles();
-
-app.UseSpa(spa =>
+if (string.IsNullOrWhiteSpace(developmentServer))
 {
-    var developmentServer = configuration["spaDevelopmentServer"];
+    app.UseSpaStaticFiles();
+}
 
-    if (string.IsNullOrWhiteSpace(developmentServer))
+app.MapWhen(ctx =>
+    !ctx.Request.Path.StartsWithSegments("/bff") &&
+    !ctx.Request.Path.StartsWithSegments("/api"),
+spaApp =>
+{
+    spaApp.UseSpa(spa =>
     {
-        spa.Options.SourcePath = clientAppPath;
-
-        return;
-    }
-
-    spa.UseProxyToSpaDevelopmentServer(developmentServer);
+        if (!string.IsNullOrWhiteSpace(developmentServer))
+        {
+            spa.UseProxyToSpaDevelopmentServer(developmentServer);
+        }
+        else
+        {
+            spa.Options.SourcePath = clientAppPath;
+        }
+    });
 });
+
 
 app.Run();
