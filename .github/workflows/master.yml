@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  backend:
+    name: Backend (.NET)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+        working-directory: Sources/bff
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+        working-directory: Sources/bff
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release
+        working-directory: Sources/bff
+
+  frontend:
+    name: Frontend (React + TypeScript)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: Sources/front/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: Sources/front
+
+      - name: CI
+        run: npm run ci
+        working-directory: Sources/front
