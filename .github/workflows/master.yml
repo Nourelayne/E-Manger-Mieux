@@ -8,7 +8,7 @@ on:
 
 jobs:
   backend:
-    name: Backend For FrontEnd
+    name: Backend For Frontend
     runs-on: ubuntu-latest
 
     steps:
