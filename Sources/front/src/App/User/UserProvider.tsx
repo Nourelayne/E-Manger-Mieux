@@ -34,7 +34,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
 
         const data: BffUserData[] | undefined = await res.json();
-        setUser({ sid: data?.find(d => d.type === "sid")?.value!, name: data?.find(d => d.type === "name")?.value! });
+        setUser({ sid: data?.find(d => d.type === "sid")?.value ?? '', name: data?.find(d => d.type === "name")?.value ?? '' });
       } catch (err) {
         console.error("User fetch error:", err);
         setError(err instanceof Error ? err : new Error("Unknown error"));
