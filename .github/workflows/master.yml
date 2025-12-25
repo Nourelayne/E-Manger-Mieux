@@ -8,7 +8,7 @@ on:
 
 jobs:
   backend:
-    name: Backend (.NET)
+    name: Backend For FrontEnd
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,7 @@ jobs:
         working-directory: Sources/bff
 
   frontend:
-    name: Frontend (React + TypeScript)
+    name: Single Page Application
     runs-on: ubuntu-latest
 
     steps:
