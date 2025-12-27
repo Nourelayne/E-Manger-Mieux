@@ -98,3 +98,8 @@ appsettings.*.json
 *.mdf
 *.ldf
 *.sqlite
+
+############################
+# EF Core
+############################
+Migrations/
