@@ -1,10 +1,9 @@
-import { useUser } from "../../App/User/UserContext";
+import { useGetUser } from "../../Hooks/User/useGetUser";
 
 export default function Home() {
-  const { user, loading, error } = useUser();
+  const { data: user, isLoading } = useGetUser();
 
-  if (loading) return <p>Loading user...</p>;
-  if (error) return <p>Error loading user: {error.message}</p>;
+  if (isLoading) return <p>Loading user...</p>;
   if (!user) return <p>No user data found.</p>;
 
   return (
