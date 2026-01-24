@@ -1,0 +1,34 @@
+.meals-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  & > .meals-ratio {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8rem;
+  }
+
+  & > .meals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    justify-items: center;
+
+    .meal {
+      & > ul > li {
+        margin: 1rem;
+      }
+    }
+  }
+}

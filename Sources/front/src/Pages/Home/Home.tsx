@@ -1,14 +1,7 @@
-import { useGetUser } from "../../Hooks/User/useGetUser";
+import { useGetProfile } from "../../Hooks/Profile/useGetProfile";
 
 export default function Home() {
-  const { data: user, isLoading } = useGetUser();
+  const { data: profile } = useGetProfile();
 
-  if (isLoading) return <p>Loading user...</p>;
-  if (!user) return <p>No user data found.</p>;
-
-  return (
-    <div>
-      <h1>Welcome, {user.name} 👋</h1>
-    </div>
-  );
+  return <h1>{`Welcome, ${profile?.lastName} ${profile?.firstName}`!}</h1>;
 }
