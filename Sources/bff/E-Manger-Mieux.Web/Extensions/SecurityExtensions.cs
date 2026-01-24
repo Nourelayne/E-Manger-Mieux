@@ -1,14 +1,16 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Models.Entities;
+using Options;
 using Repositories;
 
 namespace Extensions;
 
 public static class SecurityExtensions
 {
-    public static void AddSecurity(this IServiceCollection services) => 
+    public static void AddSecurity(this IServiceCollection services, AuthOptions authOptions) => 
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = "Cookies";
@@ -18,14 +20,14 @@ public static class SecurityExtensions
         {
             options.Cookie.Name = "__Host-bff";
             options.Cookie.SameSite = SameSiteMode.Strict;
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
             options.SlidingExpiration = true;
         })
         .AddOpenIdConnect("oidc", options =>
         {
-            options.Authority = "https://dev-wlkslufn3zpilm2k.us.auth0.com";
-            options.ClientId = "0W1VsWgeQRgX9DnKbRwPKIn3ZiOtIQHE";
-            options.ClientSecret = "7dC9FvLPFixn0bevok_zBgqd08Hz53YP-4ZWTdoQtNnp7Sj81RRlqgK5zRxIMn8q";
+            options.Authority = authOptions.Authority;
+            options.ClientId = authOptions.ClientId;
+            options.ClientSecret = authOptions.ClientSecret;
             options.CallbackPath = new PathString("/authentication-callback");
             options.RequireHttpsMetadata = true;
 
@@ -42,10 +44,10 @@ public static class SecurityExtensions
 
             options.Events.OnTokenValidated = OnTokenValidated;
         });
-
+        
     public async static Task OnTokenValidated(TokenValidatedContext context)
     {
-        var sub = context.Principal?.FindFirst("sid")?.Value;
+        var sub = context.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(sub))
         {
@@ -70,21 +72,18 @@ public static class SecurityExtensions
                     Id = Guid.NewGuid(),
                     AuthSubject = sub,
                     CreateAt = DateTimeOffset.Now,
+                    IsVerified = false,
                     Profile = new Profile
                     {
                         Id = profileId,
                         UserId = userId,
+                        AvatarUrl = context.Principal?.FindFirst("picture")?.Value,
                     }
                 });
-
-                context.Success();
-                return;
             }
             catch
             {
                 context.Fail("User creation failed");
-
-                return;
             }
         }
 
