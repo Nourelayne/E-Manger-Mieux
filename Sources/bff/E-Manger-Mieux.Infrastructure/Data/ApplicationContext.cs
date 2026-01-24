@@ -27,6 +27,7 @@ public class ApplicationContext : DbContext
 
             e.Property(x => x.CreateAt)
                 .HasColumnType("datetime(6)")
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
             e.Property(x => x.UpdateAt)
@@ -41,6 +42,10 @@ public class ApplicationContext : DbContext
 
             e.Property(x => x.FirstName).HasMaxLength(100);
             e.Property(x => x.LastName).HasMaxLength(100);
+
+            e.Property(x => x.DateOfBirth).HasColumnType("datetime(6)")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
 
             e.HasIndex(x => x.UserId).IsUnique();
 
