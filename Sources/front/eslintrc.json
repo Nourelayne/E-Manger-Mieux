@@ -1,0 +1,13 @@
+{
+  "eslintIgnore": ["node_modules", "dist"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  }
+}
