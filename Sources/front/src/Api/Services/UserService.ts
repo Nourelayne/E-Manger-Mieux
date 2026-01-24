@@ -1,7 +1,7 @@
-import { bffClient } from "../HttpClient";
-import type { Claim } from "../Models/Claim";
+import { apiClient } from "../HttpClient";
+import type { UserDto } from "../Models/Entities/UserDto";
 
-export const getUser = async (): Promise<Claim[]> => {
-  const { data } = await bffClient.get<Claim[]>("/user");
+export const getUser = async (): Promise<UserDto> => {
+  const { data } = await apiClient.get<UserDto>("/users/me");
   return data;
 };

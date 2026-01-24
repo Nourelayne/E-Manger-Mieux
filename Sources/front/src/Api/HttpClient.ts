@@ -28,11 +28,10 @@ const httpClient = (baseURL: string) => {
       }
 
       throw error;
-    },
+    }
   );
 
   return client;
 };
 
-export const bffClient = httpClient("/bff");
 export const apiClient = httpClient("/api");
