@@ -1,13 +1,9 @@
-namespace Models.Entities;
+namespace Models;
 
 using Models.Enums;
 
-public class Profile
-{
-    public Guid Id { get; set; }
-
-    public Guid UserId { get; set; }
-
+public class ProfileDto
+{    
     public string? FirstName { get; set; }
 
     public string? LastName { get; set; }
@@ -18,13 +14,7 @@ public class Profile
 
     public decimal? Height { get; set; } 
 
-    public HeightUnit HeightUnit { get; set; } = HeightUnit.Cm;
-
     public decimal? Weight { get; set; } 
 
-    public WeightUnit WeightUnit { get; set; } = WeightUnit.Kg;
-
     public string? AvatarUrl { get; set; }
-
-    public virtual User User { get; set; } = null!;
 }

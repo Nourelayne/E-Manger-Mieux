@@ -10,7 +10,7 @@ public class User
 
     public DateTimeOffset CreateAt { get; set; }
 
-    public DateTimeOffset UpdateAt { get; set; }
+    public DateTimeOffset? UpdateAt { get; set; }
 
     public virtual Profile? Profile { get; set; }
 }
